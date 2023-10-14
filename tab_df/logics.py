@@ -1,12 +1,12 @@
 import pandas as pd
-
+import numpy as np
 
 class Dataset:
     """
     --------------------
     Description
     --------------------
-    -> Dataset (class): Class that manages a dataset loaded from Postgres
+    -> Dataset (class): Class that manages a dataset loaded from CSV file
 
     --------------------
     Attributes
@@ -51,6 +51,25 @@ class Dataset:
         --------------------
         -> None
         """
+        # Load the CSV file and set self.df if it hasn't been provided before
+        self.set_df()
+        
+        # Check if self.df is None or empty
+        if self.is_df_none():
+            print("Empty Data")
+        else:
+            # Compute other information if self.df is not None
+            self.set_columns()
+            self.set_dimensions()
+            self.set_duplicates()
+            self.set_missing()
+            self.set_numeric()
+            self.set_text()
+            self.set_table()
+
+
+        # Load the DataFrame and compute the necessary information
+       
         
         
     def set_df(self):
@@ -71,7 +90,9 @@ class Dataset:
         -> None
 
         """
-        
+        if self.df is None:
+            self.df = pd.read_csv(self.file_path)
+            
 
     def is_df_none(self):
         """
@@ -91,7 +112,7 @@ class Dataset:
         -> (bool): Flag stating if self.df is empty or not
 
         """
-        
+        return self.df is None or self.df.empty
 
     def set_columns(self):
         """
@@ -111,7 +132,8 @@ class Dataset:
         -> None
 
         """
-        
+        if not self.is_df_none():
+            self.cols_list = list(self.df.columns)
 
     def set_dimensions(self):
         """
@@ -131,7 +153,8 @@ class Dataset:
         -> None
 
         """
-        
+        if not self.is_df_none():
+            self.n_rows, self.n_cols = self.df.shape
 
     def set_duplicates(self):
         """
@@ -151,7 +174,8 @@ class Dataset:
         -> None
 
         """
-        
+        if not self.is_df_none():
+            self.n_duplicates = self.df.duplicated().sum()
 
     def set_missing(self):
         """
@@ -171,7 +195,9 @@ class Dataset:
         -> None
 
         """
-        
+        # To find the no of rows with missing value atleast in one column
+        if not self.is_df_none():
+            self.n_missing = self.df[self.df.isnull().any(axis=1)].shape[0]
 
     def set_numeric(self):
         """
@@ -191,7 +217,9 @@ class Dataset:
         -> None
 
         """
-        
+        if not self.is_df_none():
+            numeric_cols = self.df.select_dtypes(include=np.number).columns
+            self.n_num_cols = len(numeric_cols)
 
     def set_text(self):
         """
@@ -211,7 +239,28 @@ class Dataset:
         -> None
 
         """
-        
+
+        if not self.is_df_none():
+            # Get columns with 'object' dtype (potential text columns)
+            text_cols = self.df.select_dtypes(include='object').columns
+
+        # Check if the potential text columns actually contain text
+        text_cols = [col for col in text_cols if any(self.df[col].apply(lambda x: isinstance(x, str)))]
+
+        # Check if the potential text columns also have a date-like format
+        for col in text_cols:
+            try:
+                # Try converting the column to datetime
+                self.df[col] = pd.to_datetime(self.df[col])
+            except ValueError:
+                # If conversion fails, it's not a date column
+                pass
+            else:
+                # If conversion succeeds, remove from text_cols
+                text_cols.remove(col)
+
+        # Update the number of text columns
+        self.n_text_cols = len(text_cols)
 
     def get_head(self, n=5):
         """
@@ -231,7 +280,9 @@ class Dataset:
         -> (Pandas.DataFrame): First rows of dataframe
 
         """
-        
+        if not self.is_df_none():
+            return self.df.head(n)
+
 
     def get_tail(self, n=5):
         """
@@ -251,7 +302,8 @@ class Dataset:
         -> (Pandas.DataFrame): Last rows of dataframe
 
         """
-        
+        if not self.is_df_none():
+            return self.df.tail(n)
 
     def get_sample(self, n=5):
         """
@@ -271,7 +323,8 @@ class Dataset:
         -> (Pandas.DataFrame): Sampled dataframe
 
         """
-        
+        if not self.is_df_none():
+            return self.df.sample(n)
 
 
     def set_table(self):
@@ -292,7 +345,11 @@ class Dataset:
         -> None
 
         """
-
+        if not self.is_df_none():
+            datatypes = self.df.dtypes
+            #memory = self.df.memory_usage(deep=True)
+            column_names = self.df.columns
+            self.table = pd.DataFrame({'column': column_names, 'data_type': datatypes})
 
     def get_summary(self):
         """
@@ -307,3 +364,9 @@ class Dataset:
         -> (pd.DataFrame): Formatted dataframe to be displayed on the Streamlit app
 
         """
+        if not self.is_df_none():
+            summary_data = {
+                'Description': ['Number of Rows', 'Number of Columns', 'Number of Duplicated Rows', 'Number of Rows with Missing Values', 'Number of Numeric Columns', 'Number of Text Columns'],
+                'Value': [self.n_rows, self.n_cols, self.n_duplicates, self.n_missing, self.n_num_cols, self.n_text_cols]
+            }
+            return pd.DataFrame(summary_data)
