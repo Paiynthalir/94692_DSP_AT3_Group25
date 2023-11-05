@@ -42,14 +42,20 @@ st.title("CSV Explorer")
 with st.expander("ℹ️ - Streamlit application for performing data exploration on a CSV", expanded=True):
     st.session_state.file_path = st.file_uploader("Choose a CSV file")
 
-# If a CSV file is uploaded, display the different tabs
+# If a file is uploaded, display the different tabs
 if st.session_state.file_path is not None:
-    tab_df, tab_num, tab_text, tab_date = st.tabs(["DataFrame", "Numeric Serie", "Text Serie", "Datetime Serie"])
-    with tab_df:
-        display_tab_df_content(file_path=st.session_state.file_path)
-    with tab_num:
-        display_tab_num_content(df=st.session_state.dataset.df)
-    with tab_text:
-        display_tab_text_content(df=st.session_state.dataset.df)
-    with tab_date:
-        display_tab_date_content(df=st.session_state.dataset.df)
+    # Check if the file has a CSV extension
+    if st.session_state.file_path.name.endswith('.csv'):
+        # If a CSV file is uploaded, display the different tabs
+        tab_df, tab_num, tab_text, tab_date = st.tabs(["DataFrame", "Numeric Serie", "Text Serie", "Datetime Serie"])
+        with tab_df:
+            display_tab_df_content(file_path=st.session_state.file_path)
+        with tab_num:
+            display_tab_num_content(df=st.session_state.dataset.df)
+        with tab_text:
+            display_tab_text_content(df=st.session_state.dataset.df)
+        with tab_date:
+            display_tab_date_content(df=st.session_state.dataset.df)
+    else:
+        # If no file is uploaded, display a message
+        st.warning("Please upload a CSV file to explore the data.")
