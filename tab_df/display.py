@@ -50,7 +50,8 @@ def display_tab_df_content(file_path):
     # Second Expander container for displaying a subset of the dataset
     with st.expander("Explore Dataframe"):
         # Slider for selecting the number of rows to display
-        num_rows = st.slider("Select the number of rows to be displayed", min_value=5, max_value=50,)
+        num_rows_max = len(dataset.df)  # Get the number of rows from the dataset
+        num_rows = st.slider("Select the number of rows to be displayed", min_value=5, max_value=num_rows_max,)
 
         # Radio button for selecting the method (head, tail, sample)
         display_method = st.radio("Exploration Method", ("Head", "Tail", "Sample"))
