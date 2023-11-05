@@ -23,7 +23,7 @@
     3. Include corelation matrix after converting all the columns in to numeric. This can help with analysing the linear relationship between the features of the data set. 
 
 ## Project Setup
-*** How to get the development environment set and running? ***
+### How to get the development environment set and running? 
     1. Install VS code from https://code.visualstudio.com/download.
     2. Install Python from https://www.python.org/downloads/.
     3. During installation select "Add python.exe to PATH" (Note: Important step not to miss).
@@ -66,32 +66,32 @@
     This interactive web application, developed using Streamlit and Python, facilitates exploratory data analysis (EDA) on CSV files provided by users. 
     The application is structured into distinct sections:
 
-*** CSV File Upload Menu ***
+### CSV File Upload Menu 
     - Users can upload a CSV file through a menu.
     - Upon file selection, the application proceeds to display a Tabs container.
 
-*** Tabs Container ***
+### Tabs Container
     - The Tabs container consists of four main tabs: Overall, DataFrame, Numeric Serie, Text Serie, and Datetime Serie.
     - Users can navigate through these tabs for detailed analysis.
 
-*** DataFrame Tab ***
+### DataFrame Tab
     - Overview: Displays key information about the dataset, including the number of rows, columns, duplicated rows, and rows with missing values.
     - Columns Information: Provides a static table showcasing column names, data types (text, numeric, date), and memory usage.
     - Interactive Exploration: Allows users to interactively explore the dataset using sliders and radio buttons to control the number of displayed rows and display logic.
 
-*** Numeric Serie Tab ***
+### Numeric Serie Tab
     - Numeric Column Selection: Users can select a numeric column to explore.
     - Statistical Information: Displays key statistics such as unique values, missing values, occurrences of 0 values, average, standard deviation, minimum, maximum, and median.
     - Interactive Histogram Chart: Features an interactive Altair histogram chart for visualizing numeric column distribution.
     - Top 20 Most Frequent Values: Lists occurrences and percentages of the top 20 most frequent values.
 
-*** Text Serie Tab ***
+### Text Serie Tab 
     - Text Column Selection: Users can choose a text column for analysis.
     - Text Information: Presents information on unique values, missing values, rows with empty strings, rows with only whitespaces, and various character-based statistics.
     - Interactive Bar Chart: Displays an Altair bar chart depicting the number of occurrences for each value.
     - Top 20 Most Frequent Values: Lists occurrences and percentages of the top 20 most frequent values.
 
-*** Datetime Serie Tab ***
+### Datetime Serie Tab 
     - Datetime Column Selection: Users can select a datetime column for exploration.
     - Datetime Information: Displays statistics on unique values, missing values, minimum and maximum dates, occurrences during weekends and weekdays, cases with future dates, and occurrences of specific date values.
     - Interactive Histogram Chart: Features an Altair histogram chart for visualizing datetime distribution.
@@ -100,11 +100,11 @@
     This application streamlines the process of gaining insights into dataset characteristics, making it a valuable tool for exploratory data analysis.
 
 ## Project Structure
-*** Folder ***
+### Folder 
   dsp_at3_group25.zip
 
-*** Files in the folder *** 
-1. README.md
+### Files in the folder 
+1. %b README.md %b
     This mardown file with all the handover documentation needed for anyone to resume, continue and maintain this project. This file contains a description of this project, listing of all Python functions and instructions for running your web app.
 
 2. requirements.txt
