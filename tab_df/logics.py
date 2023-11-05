@@ -32,6 +32,8 @@ class Dataset:
         self.n_missing = 0
         self.n_num_cols = 0
         self.n_text_cols = 0
+        self.n_date_cols = 0
+        self.n_bool_cols = 0
         self.table = None
 
     def set_data(self):
@@ -65,6 +67,7 @@ class Dataset:
             self.set_missing()
             self.set_numeric()
             self.set_text()
+            self.set_bool()
             self.set_table()
 
 
@@ -243,6 +246,7 @@ class Dataset:
         if not self.is_df_none():
             # Get columns with 'object' dtype (potential text columns)
             text_cols = self.df.select_dtypes(include='object').columns
+            date_cols = set()  # Use set() to store date columns
 
         # Check if the potential text columns actually contain text
         text_cols = [col for col in text_cols if any(self.df[col].apply(lambda x: isinstance(x, str)))]
@@ -256,11 +260,40 @@ class Dataset:
                 # If conversion fails, it's not a date column
                 pass
             else:
-                # If conversion succeeds, remove from text_cols
+                # If conversion succeeds, remove from text_cols and add to date_cols
                 text_cols.remove(col)
+                date_cols.add(col)
 
         # Update the number of text columns
         self.n_text_cols = len(text_cols)
+        self.n_date_cols = len(date_cols)
+
+
+    def set_bool(self):
+        """
+        --------------------
+        Description
+        --------------------
+        -> set_date (method): Class method that computes the number of columns that are boolean type and store the results in the relevant attribute (self.n_bool_cols) if self.df is not empty nor None 
+        
+        --------------------
+        Parameters
+        --------------------
+        -> None
+
+        --------------------
+        Returns
+        --------------------
+        -> None
+
+        """
+
+        if not self.is_df_none():
+            # Get columns with 'object' dtype (potential text columns)
+            bool_cols = self.df.select_dtypes(include='bool').columns
+
+        # Update the number of text columns
+        self.n_bool_cols = len(bool_cols)
 
     def get_head(self, n=5):
         """
@@ -345,12 +378,22 @@ class Dataset:
         -> None
 
         """
+
         if not self.is_df_none():
             datatypes = self.df.dtypes
-            #memory = self.df.memory_usage(deep=True)
-            column_names = self.df.columns
-            self.table = pd.DataFrame({'column': column_names, 'data_type': datatypes})
 
+            # Memory usage including the index
+            memory_with_index = self.df.memory_usage(deep=False, index=True)
+
+            column_names = self.df.columns
+
+
+            self.table = pd.DataFrame({
+                'column': ['Index'] + column_names.tolist(),  # Include 'index' as the first row
+                'data_type': [self.df.index.dtype] + datatypes.tolist(),  # Include index dtype
+                'memory_usage': memory_with_index.tolist(),  # Include index memory usage
+            })
+            
     def get_summary(self):
         """
         --------------------
@@ -366,7 +409,7 @@ class Dataset:
         """
         if not self.is_df_none():
             summary_data = {
-                'Description': ['Number of Rows', 'Number of Columns', 'Number of Duplicated Rows', 'Number of Rows with Missing Values', 'Number of Numeric Columns', 'Number of Text Columns'],
-                'Value': [self.n_rows, self.n_cols, self.n_duplicates, self.n_missing, self.n_num_cols, self.n_text_cols]
+                'Description': ['Number of Rows', 'Number of Columns', 'Number of Duplicated Rows', 'Number of Rows with Missing Values', 'Number of Numeric Columns', 'Number of Text Columns', 'Number of Columns with date format', 'Number of Columns with boolean format' ],
+                'Value': [self.n_rows, self.n_cols, self.n_duplicates, self.n_missing, self.n_num_cols, self.n_text_cols, self.n_date_cols, self.n_bool_cols]
             }
             return pd.DataFrame(summary_data)

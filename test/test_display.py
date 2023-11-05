@@ -1,6 +1,6 @@
 import streamlit as st
 
-from tab_df.logics import Dataset
+from test_memory import Dataset
 
 def display_tab_df_content(file_path):
     """
@@ -34,34 +34,7 @@ def display_tab_df_content(file_path):
     # Save the Dataset object into Streamlit session state
     st.session_state.dataset = dataset
 
-    summary_df = dataset.get_summary()
-
-    # Display dataset summary as a Streamlit Table
-    st.write("Dataframe")
-    st.table(summary_df)
-
-    # Extract relevant information from dataset for display
-    columns_info = dataset.table
-
     # Display dataset table
     st.write("Columns")
-    st.table(columns_info)
-
-    # Second Expander container for displaying a subset of the dataset
-    with st.expander("Explore Dataframe"):
-        # Slider for selecting the number of rows to display
-        num_rows = st.slider("Select the number of rows to be displayed", min_value=5, max_value=50,)
-
-        # Radio button for selecting the method (head, tail, sample)
-        display_method = st.radio("Exploration Method", ("Head", "Tail", "Sample"))
-
-        if display_method == "Head":
-            st.write("Top rows of Selected Table")
-            st.write(dataset.get_head(num_rows))
-        elif display_method == "Tail":
-            st.write("Bottom rows of Selected Table")
-            st.write(dataset.get_tail(num_rows))
-        elif display_method == "Sample":
-            st.write("Random Sample of Selected Table")
-            st.write(dataset.get_sample(num_rows))
-
+    st.table(dataset.table)
+    
