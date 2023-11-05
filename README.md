@@ -21,6 +21,7 @@
     1. Extend the application usage to other file formats like excel, parquet, json to make it more useful to explore wide range of data files
     2. Include visualisations for missing data in first tab
     3. Include corelation matrix after converting all the columns in to numeric. This can help with analysing the linear relationship between the features of the data set. 
+    4. Include copy button for each table and chart, to enable easy transfer of summarised data and charts into other documents.
 
 ## Project Setup
 ### How to get the development environment set and running? 
