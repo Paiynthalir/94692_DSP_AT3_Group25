@@ -37,6 +37,14 @@
     11. Login to git hub - https://github.com/Paiynthalir/94692_DSP_AT3_Group25/tree/main
     12. Push, Pull and Sync the code into the git hub and the project setup is all set. 
 
+Some basic Git commands are:
+```
+git status
+git add .
+git commit -m "summary of changes"
+git push -u origin main
+```
+
 ## Python version
     Python 3.11.5 64-bit Windows
 
@@ -104,13 +112,16 @@
   dsp_at3_group25.zip
 
 ### Files in the folder 
-1. %b README.md %b
+1. **README.md **
+
     This mardown file with all the handover documentation needed for anyone to resume, continue and maintain this project. This file contains a description of this project, listing of all Python functions and instructions for running your web app.
 
-2. requirements.txt
+2. **requirements.txt**
+
     This document contains the techinical requirements - the version of each package used for this project setup. 
 
-3. tab_df/display.py
+3. **tab_df/display.py**
+
     This Python script defines a function, display_tab_df_content, that is intended to be used in a Streamlit application for exploring the DataFrame tab. The function takes a file path to an uploaded CSV file as input. Inside the function:
 
     - It creates an instance of the Dataset class from the tab_df.logics module, passing the file path as an argument.
@@ -120,7 +131,8 @@
     - The function also includes an expander container for interactive exploration of the dataset. Users can select the number of rows to display using a slider and - - choose the exploration method (head, tail, or sample) using a radio button. Depending on user selections, a subset of the dataset is displayed using Streamlit's st.write.
     - The Dataset class from the tab_df.logics module is responsible for handling the computation of various dataset statistics and properties.
 
-4. tab_df/logics.py
+4. **tab_df/logics.py**
+
     This Python file defines a class named Dataset that is designed to manage a dataset loaded from a CSV file. The class has various attributes to store information about the dataset, including the file path, DataFrame (df), a list of column names (cols_list), and counts of rows, columns, duplicates, missing values, numeric columns, text columns, date columns, and boolean columns. The class provides methods to compute and set these attributes based on the loaded dataset.
 
     The Dataset class methods include:
@@ -133,27 +145,34 @@
     - get_summary: Formats the computed information into a Pandas DataFrame with two columns: Description and Value, suitable for display in the Streamlit app.
     In summary, this class encapsulates functionality for loading, managing, and computing various statistics and properties of a dataset loaded from a CSV file, facilitating exploratory data analysis in a Streamlit application.
 
-5. tab_date/display.py
+5. **tab_date/display.py**
+
     This Python script defines a function, display_tab_date_content, intended for use in a Streamlit application to explore datetime columns. The function, given a file path or a loaded DataFrame (both optional), instantiates the DateColumn class from the tab_date.logics module. It then saves this instance into Streamlit session state and calls its find_date_cols() method to identify all datetime columns. Subsequently, the function displays a Streamlit select box containing the list of detected datetime columns. Upon selecting a datetime column from the box, the function calls the set_data() method of the DateColumn class to compute relevant information. It then presents this information in a Streamlit Expander container, including a summary table, a histogram graph, and the results of a frequency analysis. Overall, this function facilitates the exploration and visualization of datetime columns within the Streamlit app.
 
-6. tab_date/logics.py
+6. **tab_date/logics.py**
+
     This Python script defines a class, DateColumn, that manages the analysis and visualization of a column from a DataFrame with a datetime data type. The class includes various attributes such as file path, DataFrame, and several statistical properties of the datetime column, such as the number of unique values, missing values, minimum and maximum values, occurrences during weekends, occurrences not during weekends, occurrences in the future, occurrences equal to '1900-01-01', and occurrences equal to '1970-01-01'. Additionally, it includes attributes for an Altair barchart and a DataFrame containing the most frequent values. The class has methods to find datetime columns, set relevant data for analysis, convert a Pandas Series to datetime data type, and compute various statistical properties. Methods are also provided for generating an Altair barchart and identifying the most frequent values in the column. The class offers a method, get_summary, to format all the computed information for display in a Streamlit application's Overall section. Overall, this class facilitates detailed analysis and visualization of datetime columns in a Streamlit app.
 
-7. tab_numeric/display.py
+7. **tab_numeric/display.py**
+
     This Python script defines a function, display_tab_num_content, for a Streamlit application. The function is designed to display the content of a numeric tab, leveraging the functionalities of the NumericColumn class from the tab_num.logics module. It takes optional parameters, file_path (string) and df (Pandas DataFrame), allowing the user to either upload a CSV file or use an already loaded DataFrame.
     Within the function, it instantiates the NumericColumn class, saves it to the Streamlit session state, and calls its methods to find numeric columns and set relevant data for analysis. The function then displays a Streamlit select box with the list of numeric columns found. Once the user selects a numeric column from the select box, it calls the NumericColumn methods to compute the necessary information. Finally, it displays a Streamlit Expander container with a summary table, a histogram graph, and the most frequent values of the selected numeric column.
     This function serves as a modular and interactive way to explore and analyze numeric columns in a Streamlit application.
 
-8. tab_numeric/logics.py
+8. **tab_numeric/logics.py**
+
     This Python script defines a NumericColumn class designed for managing numeric columns within a Pandas DataFrame. The class provides functionalities for analyzing and visualizing numeric data, including computing descriptive statistics such as mean, standard deviation, minimum, maximum, and median, as well as identifying unique values, missing values, occurrences of zeros, and negative values. The class also generates an Altair histogram and a DataFrame of the most frequent values for a selected numeric column. The script includes methods for loading data, setting up column-specific attributes, and computing various statistical measures and visualizations. Additionally, a Streamlit integration is outlined in a separate function (display_tab_num_content), which uses the NumericColumn class to create an interactive Streamlit app for exploring numeric columns in a dataset, displaying relevant statistics and visualizations. Users can upload a CSV file or use an existing DataFrame, select a numeric column, and explore its characteristics through the Streamlit app.
 
-9. tab_text/display.py
+9. **tab_text/display.py**
+
     This Python script defines a Streamlit function, display_tab_text_content, intended for exploring and visualizing text columns within a dataset. The function utilizes the TextColumn class from the tab_text.logics module. Upon providing a CSV file path or an existing DataFrame, users can invoke this function to instantiate the TextColumn class, save it in Streamlit session state, and identify all text columns using the find_text_cols method. Subsequently, a Streamlit select box is displayed, enabling users to choose a specific text column for analysis. Upon selection, the set_data method is invoked to compute relevant information about the chosen text column. The function then showcases this information within a Streamlit Expander container, including a table of summary statistics (get_summary), an Altair histogram (histogram), and details about the most frequent values (frequent). This script extends the capabilities of Streamlit for interactive exploration of text data in a user-friendly manner.
 
-10. tab_text/logics.py
+10. **tab_text/logics.py**
+
     The provided Python script defines a TextColumn class for handling text columns within a DataFrame, with associated methods for analysis and visualization. The class attributes include information about the dataset, the text column, and various computed statistics such as unique values, missing values, mode, presence of whitespace, uppercase and lowercase characters, and more. The class provides methods like find_text_cols to identify text columns, set_data to load and analyze a specific text column, and get_summary to format the results for display. Additionally, the script utilizes Altair for generating a barchart and provides a DataFrame containing the most frequent values in the text column. This TextColumn class is designed to be integrated with Streamlit, allowing users to interactively explore and visualize textual data within a Streamlit app.
 
-11. app/streamlit_app.py
+11. **app/streamlit_app.py**
+
     This is the main streamlit applicaition, that contains code that allows users to upload a CSV file and explore its content across different tabs, each dedicated to various aspects of data analysis (DataFrame overview, numeric column analysis, text column analysis, and datetime column analysis). The application structure and functionality promote an interactive and user-friendly approach to data exploration.
 
 
