@@ -176,6 +176,10 @@ git push -u origin main
 
     This is the main streamlit applicaition, that contains code that allows users to upload a CSV file and explore its content across different tabs, each dedicated to various aspects of data analysis (DataFrame overview, numeric column analysis, text column analysis, and datetime column analysis). The application structure and functionality promote an interactive and user-friendly approach to data exploration.
 
+12. **test/**
+
+    This folder contains some test python files which was used to test some parts of the code to help debug an isolated issue when developing the tab_df functions. These files do not follow a standard unit testing format. 
+
 
 
 ## Citations
