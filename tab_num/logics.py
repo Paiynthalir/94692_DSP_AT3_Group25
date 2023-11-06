@@ -65,7 +65,14 @@ class NumericColumn:
         -> None
 
         """
+        if self.df is None:
+            if self.file_path is not None:
+                self.df = pd.read_csv(self.file_path)
+            else:
+                raise ValueError("No DataFrame or file path provided.")
         
+        numeric_column = self.df.select_dtypes(include=['int64', 'float64']).columns.tolist()
+        self.cols_list = numeric_column
 
     def set_data(self, col_name):
         """
@@ -85,6 +92,11 @@ class NumericColumn:
         -> None
 
         """
+        if col_name not in self.cols_list:
+            raise ValueError(f"'{col_name}' is not a numeric column.")
+        
+        self.serie = self.df[col_name]
+
 
     def convert_serie_to_num(self):
         """
@@ -104,6 +116,8 @@ class NumericColumn:
         -> None
 
         """
+        if self.serie != None:
+            self.serie = pd.to_numeric(self.serie, errors = 'coerce')
         
 
     def is_serie_none(self):
@@ -124,7 +138,7 @@ class NumericColumn:
         -> (bool): Flag stating if the serie is empty or not
 
         """
-        
+        return self.serie == None
 
     def set_unique(self):
         """
@@ -144,6 +158,8 @@ class NumericColumn:
         -> None
 
         """
+        if not self.is_serie_none():
+            self.n_unique = self.serie.nunique()
         
 
     def set_missing(self):
@@ -164,6 +180,8 @@ class NumericColumn:
         -> None
 
         """
+        if not self.is_serie_none():
+            self.n_missing = self.serie.isnull().sum()
         
 
     def set_zeros(self):
@@ -184,7 +202,8 @@ class NumericColumn:
         -> None
 
         """
-        
+        if not self.is_serie_none():
+            self.n_zeros = (self.serie == 0).sum()
 
     def set_negatives(self):
         """
@@ -204,6 +223,8 @@ class NumericColumn:
         -> None
 
         """
+        if not self.is_serie_none():
+            self.n_negatives = (self.serie < 0).sum()
         
 
     def set_mean(self):
@@ -224,7 +245,8 @@ class NumericColumn:
         -> None
 
         """
-        
+        if not self.is_serie_none():
+            self.col_mean = self.serie.mean()
 
     def set_std(self):
         """
@@ -244,7 +266,8 @@ class NumericColumn:
         -> None
 
         """
-        
+        if not self.is_serie_none():
+            self.col_std = self.serie.std()
     
     def set_min(self):
         """
@@ -264,7 +287,8 @@ class NumericColumn:
         -> None
 
         """
-        
+        if not self.is_serie_none():
+            self.col_min = self.serie.mean()
 
     def set_max(self):
         """
@@ -284,6 +308,8 @@ class NumericColumn:
         -> None
 
         """
+        if not self.is_serie_none():
+            self.col_max = self.serie.max()
         
 
     def set_median(self):
@@ -304,6 +330,8 @@ class NumericColumn:
         -> None
 
         """
+        if not self.is_serie_none():
+            self.col_median = self.serie.median()
         
 
     def set_histogram(self):
@@ -324,6 +352,12 @@ class NumericColumn:
         -> None
 
         """
+        if not self.is_serie_none():
+            chart = alt.Chart(self.df).mark_bar().encode(
+                x=alt.X(f'{self.serie.name}:Q', bin=alt.Bin(maxbins=30)),
+                y=alt.Y('count():Q'),
+            )
+            self.histogram = chart
         
 
     def set_frequent(self, end=20):
@@ -345,6 +379,11 @@ class NumericColumn:
         -> None
 
         """
+        if not self.is_serie_none():
+            counts = self.serie.value_counts()
+            frequent_df = pd.DataFrame({'value': counts.index, 'occurrence': counts.values})
+            frequent_df['percentage'] = (frequent_df['occurrence'] / len(self.serie)) * 100
+            self.frequent = frequent_df.head(end)
         
     def get_summary(self,):
         """
@@ -364,4 +403,12 @@ class NumericColumn:
         -> (pd.DataFrame): Formatted dataframe to be displayed on the Streamlit app
 
         """
-        
+        data = {
+            'Description': ['Number of Unique Values', 'Number of Missing Values', 'Mean', 
+                            'Standard Deviation', 'Minimum Value', 'Maximum Value', 'Median', 
+                            'Number of Zeros', 'Number of Negatives'],
+            'Value': [self.n_unique, self.n_missing, self.col_mean, self.col_std, self.col_min,
+                      self.col_max, self.col_median, self.n_zeros, self.n_negatives]
+        }
+        summary_df = pd.DataFrame(data)
+        return summary_df
