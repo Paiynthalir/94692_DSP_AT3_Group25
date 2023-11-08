@@ -27,12 +27,12 @@ def display_tab_df_content(file_path):
     """
     # Instantiate the Dataset class
     dataset = Dataset(file_path)
-
     # Compute all the necessary information
     dataset.set_data()
 
     # Save the Dataset object into Streamlit session state
     st.session_state.dataset = dataset
+    st.write (st.session_state.dataset.df)
 
     # Display dataset summary as a Streamlit Table
     st.write("Dataframe")

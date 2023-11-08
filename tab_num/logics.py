@@ -1,5 +1,6 @@
 import pandas as pd
 import altair as alt
+from collections import Counter
 
 
 class NumericColumn:
@@ -97,6 +98,19 @@ class NumericColumn:
         
         self.serie = self.df[col_name]
 
+        self.convert_serie_to_num()
+        self.set_unique()
+        self.set_missing()
+        self.set_zeros()
+        self.set_negatives()
+        self.set_mean()
+        self.set_std()
+        self.set_min()
+        self.set_max()
+        self.set_median()
+        # self.set_histogram()
+        self.set_frequent()
+
 
     def convert_serie_to_num(self):
         """
@@ -116,7 +130,7 @@ class NumericColumn:
         -> None
 
         """
-        if self.serie != None:
+        if self.serie is not None:
             self.serie = pd.to_numeric(self.serie, errors = 'coerce')
         
 
@@ -138,7 +152,7 @@ class NumericColumn:
         -> (bool): Flag stating if the serie is empty or not
 
         """
-        return self.serie == None
+        return self.serie is None
 
     def set_unique(self):
         """
@@ -352,13 +366,21 @@ class NumericColumn:
         -> None
 
         """
+        # dict_ = dict(Counter (self.serie))
+        # X = dict.keys()
+        # Y = dict.values()
+        # data = pd.DataFrame ( data = {
+        #     'value' : X,
+        #     'count' : Y
+        # }
+        # )
+        # print (data)
+
         if not self.is_serie_none():
-            chart = alt.Chart(self.df).mark_bar().encode(
-                x=alt.X(f'{self.serie.name}:Q', bin=alt.Bin(maxbins=30)),
-                y=alt.Y('count():Q'),
-            )
+            chart = alt.Chart(data).mark_bar().encode(
+                x='value',
+                y='count')
             self.histogram = chart
-        
 
     def set_frequent(self, end=20):
         """
@@ -385,7 +407,7 @@ class NumericColumn:
             frequent_df['percentage'] = (frequent_df['occurrence'] / len(self.serie)) * 100
             self.frequent = frequent_df.head(end)
         
-    def get_summary(self,):
+    def get_summary(self):
         """
         --------------------
         Description

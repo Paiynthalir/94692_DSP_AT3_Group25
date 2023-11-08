@@ -28,21 +28,21 @@ def display_tab_num_content(file_path=None, df=None):
 
     """
 
-    numeric_column = NumericColumn(file_path, df)
+    numeric_column = NumericColumn(df = df)
 
     numeric_column.find_num_cols()
 
     selected_col = st.selectbox("Select a numeric column:", numeric_column.cols_list)
 
-    if selected_col:
-        numeric_column.set_data(selected_col)
+    numeric_column.set_data(selected_col)
 
-        with st.expander("Numeric Column Summary"):
-            st.write("Summary:")
-            summary_df = numeric_column.get_summary()
-            st.write(summary_df)
-            st.write("Histogram:")
-            st.altair_chart(numeric_column.histogram, use_container_width=True)
-            st.write("Frequent Values:")
-            st.write(numeric_column.frequent)
+    with st.expander("Numeric Column Summary"):
+        st.write("Summary:")
+        summary_df = numeric_column.get_summary()
+        st.write (numeric_column.n_unique)
+        st.write(summary_df)
+        st.write("Histogram:")
+        st.altair_chart(numeric_column.histogram, use_container_width=True)
+        st.write("Frequent Values:")
+        st.write(numeric_column.frequent)
     
