@@ -108,7 +108,7 @@ class NumericColumn:
         self.set_min()
         self.set_max()
         self.set_median()
-        # self.set_histogram()
+        self.set_histogram()
         self.set_frequent()
 
 
@@ -366,20 +366,20 @@ class NumericColumn:
         -> None
 
         """
-        # dict_ = dict(Counter (self.serie))
-        # X = dict.keys()
-        # Y = dict.values()
-        # data = pd.DataFrame ( data = {
-        #     'value' : X,
-        #     'count' : Y
-        # }
-        # )
-        # print (data)
+        dict_ = dict(Counter(self.serie))
+        X = dict_.keys()
+        Y = dict_.values()
+        data = pd.DataFrame(data = {
+            'value' : X,
+            'count' : Y
+        })
+        print (data)
 
         if not self.is_serie_none():
             chart = alt.Chart(data).mark_bar().encode(
-                x='value',
-                y='count')
+                x = 'value',
+                y= 'count'
+            )
             self.histogram = chart
 
     def set_frequent(self, end=20):
