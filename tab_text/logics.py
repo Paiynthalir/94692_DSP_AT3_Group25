@@ -95,7 +95,7 @@ class TextColumn:
             y='occurrence:Q'
         )
 # Determine the most frequent values and their percentages in the series.      
-    def set_frequent(self, end=21):
+    def set_frequent(self, end=20):
         # Calculate frequency and percentage of the most common values.
         self.frequent = self.serie.value_counts().head(end).reset_index()
         self.frequent.columns = ['value', 'occurrence']
