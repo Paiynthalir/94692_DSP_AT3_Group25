@@ -88,7 +88,7 @@ class TextColumn:
         self.n_digit = self.serie.str.isdigit().sum()
 
 # Generate a bar chart visualization of the value counts of the series.
-    def set_barchart(self):
+    def set_barchart(self, width=600, height=400):
         value_counts = self.serie.value_counts().reset_index().rename(columns={'index': 'value', self.serie.name: 'occurrence'})
         self.barchart = alt.Chart(value_counts.head(20)).mark_bar().encode(
             x='value:N',
