@@ -97,10 +97,8 @@ class DateColumn:
         --------------------
         -> None
         """
-
-        if col_name not in self.cols_list:
-            raise ValueError(f"'{col_name}' is not a datetime column.")
-        self.serie = self.df[col_name]
+        if col_name in self.df.columns:
+            self.serie = self.df[col_name]
         self.convert_serie_to_date()
         self.set_unique()
         self.set_missing()
@@ -377,8 +375,8 @@ class DateColumn:
                 x='value',
                 y='count'
             ).properties(
-                title='Value Counts').interactive()
-
+                title='Value Counts'
+            )
       
     def set_frequent(self, end=20):
         """
