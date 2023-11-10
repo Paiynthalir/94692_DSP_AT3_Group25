@@ -27,7 +27,6 @@ def display_tab_df_content(file_path):
     """
     # Instantiate the Dataset class
     dataset = Dataset(file_path)
-
     # Compute all the necessary information
     dataset.set_data()
 

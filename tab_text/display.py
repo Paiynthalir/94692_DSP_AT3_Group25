@@ -1,30 +1,40 @@
+import altair as alt
 import streamlit as st
-
 from tab_text.logics import TextColumn
+import altair as alt
+
 
 def display_tab_text_content(file_path=None, df=None):
-    """
-    --------------------
-    Description
-    --------------------
-    -> display_tab_text_content (function): Function that will instantiate tab_text.logics.TextColumn class, save it into Streamlit session state and call its tab_text.logics.TextColumn.find_text_cols() method in order to find all text columns.
-    Then it will display a Streamlit select box with the list of text columns found.
-    Once the user select a text column from the select box, it will call the tab_text.logics.TextColumn.set_data() method in order to compute all the information to be displayed.
-    Then it will display a Streamlit Expander container with the following contents:
-    - the results of tab_text.logics.TextColumn.get_summary() as a Streamlit Table
-    - the graph from tab_text.logics.TextColumn.histogram using Streamlit.altair_chart()
-    - the results of tab_text.logics.TextColumn.frequent using Streamlit.write
- 
-    --------------------
-    Parameters
-    --------------------
-    -> file_path (str): File path to uploaded CSV file (optional)
-    -> df (pd.DataFrame): Loaded dataframe (optional)
+    if df is not None:
+        # Instantiate the TextColumn class with the dataframe
+        text_col_analyser = TextColumn(df=df)
+        
+        # Call find_text_cols to get all text columns and store them in session state
+        text_columns = text_col_analyser.find_text_cols()
+        if not text_columns:
+            st.write("No text columns found in the dataset.")
+            return
 
-    --------------------
-    Returns
-    --------------------
-    -> None
+        # Display a select box with the list of text columns
+        selected_col = st.selectbox("Which column do you want to explaore?", text_columns)
 
-    """
-    
+        # Once a user selects a column, compute all information for that column
+        text_col_analyser.set_data(selected_col)
+        chart = text_col_analyser.barchart
+        # Display the results in an expander
+        with st.expander("Text Column"):
+            # Display the summary as a Streamlit Table
+            st.table(text_col_analyser.get_summary())
+
+            st.subheader('Bar Chart')
+            # Display the bar chart using Streamlit's altair_chart function
+            chart = chart.encode(
+              x=alt.X('value:N', title=selected_col),
+              y=alt.Y('occurrence:Q', title='Count of Records')
+            ).properties() 
+            st.altair_chart(chart, use_container_width=True)
+            st.subheader('Most Frequent Values')
+            # Display the most frequent values using Streamlit's write function
+            st.write(text_col_analyser.frequent)
+    else:
+        st.error("No DataFrame provided.")
