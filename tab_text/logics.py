@@ -106,26 +106,26 @@ class TextColumn:
         # Create a summary dictionary with descriptions and values.
         summary_data = {
             'Description': [
-                'Number of unique values',
-                'Number of missing values',
-                'Number of empty strings',
-                'Mode value',
-                'Number of spaces',
-                'Number of lowercase values',
-                'Number of uppercase values',
-                'Number of alphabetic strings',
-                'Number of digit strings'
+                'Number of Unique Values',
+                'Number of Rows With Missing Values',
+                'Number of Empty Rows',
+                'Number of Rows with Only Whitespace',
+                'Number of Rows with Only Lowercases',
+                'Number of Rows with Only Uppercases',
+                'Number of of Rows with only Alphabet',
+                'Number of Rows with Only Digits',
+                'Mode value'
             ],
             'Value': [
                 self.n_unique,
                 self.n_missing,
                 self.n_empty,
-                self.n_mode,
                 self.n_space,
                 self.n_lower,
                 self.n_upper,
                 self.n_alpha,
-                self.n_digit
+                self.n_digit,
+                self.n_mode,
             ]
         }
         return pd.DataFrame(summary_data) # Return summary as a DataFrame.
