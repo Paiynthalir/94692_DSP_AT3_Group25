@@ -29,3 +29,4 @@ def display_tab_date_content(file_path=None, df=None):
         st.write("Frequent Values:")
         st.write(date_col.frequent)
 
+
