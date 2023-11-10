@@ -70,6 +70,8 @@ git push -u origin main
     Network URL: http://192.168.1.110:8502
 
     3. Now the CSV data exploration APP is available are the web application in the browser to use.
+    4. In addition to the above steps, the app can also be accessed through https://dataexplorer-paiynthalir.streamlit.app/
+        since this app is also deployed using streamlit cloud. 
 
 ## How the app works 
     This interactive web application, developed using Streamlit and Python, facilitates exploratory data analysis (EDA) on CSV files provided by users. 
