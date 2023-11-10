@@ -373,7 +373,7 @@ class NumericColumn:
             'value' : X,
             'count' : Y
         })
-        print (data)
+        print(data)
 
         if not self.is_serie_none():
             chart = alt.Chart(data).mark_bar().encode(
